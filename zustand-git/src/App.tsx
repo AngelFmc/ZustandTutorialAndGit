@@ -1,35 +1,34 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// En el archivo app realizara el codigo para acceder al store
+import { useBookStore } from "./store/bookStore"; //Se importa la store
+
+//Para difundir el objeto con multiples estados importamos shallow
+import { shallow } from "zustand/shallow";
 
 function App() {
-  const [count, setCount] = useState(0)
+  //Se llama el hook, en el parametro se indica que propiedad se quiere extraer del store
+  //De esta manera se acceden a mas estados pero de manera individual
+
+  // const amount = useBookStore((state) => state.amount);
+  // const title = useBookStore((state) => state.author);
+
+  // De esta manera se genera un objeto con multiples estados o propiedades
+
+  const { amount, title } = useBookStore(
+    (state) => ({
+      amount: state.amount,
+      title: state.author,
+    }),
+    shallow
+  );
 
   return (
     <>
       <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        <h1>Books: {amount}</h1>
+        <h4>Title: {title}</h4>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
